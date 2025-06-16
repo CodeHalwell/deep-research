@@ -1,35 +1,29 @@
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from utils.load_config import load_config
-from utils.load_config import Config
+from typing import List, Optional
 
 from llama_index.core.agent.workflow import FunctionAgent
-from llama_index.llms.openai import OpenAI
+from models.agent import Agent
 
-class ReviewAgent:
-    """Agent for reviewing reports and providing feedback."""
-    def __init__(self, 
-                 name: str, 
-                 description: str, 
-                 system_prompt: str, 
-                 llm: OpenAI, 
-                 tools: list, 
-                 can_handoff_to: list[str]) -> None:
-        self.name = name
-        self.description = description
-        self.system_prompt = system_prompt
-        self.llm = llm
-        self.tools = tools
-        self.can_handoff_to = can_handoff_to
-
-    def _get_llm_server(self, api_key: str, config_path: str) -> OpenAI:
-        """Initializes the LLM server with the provided API key and model."""
-        if not api_key:
-            raise ValueError("API key is required for the LLM server.")
-        config: Config = load_config(config_path)
-        model = config.model
-        return OpenAI(api_key=api_key, model=model)
+class ReviewAgent(Agent):
+    def __init__(
+        self,
+        name: str = "ReviewAgent",
+        description: str = "Useful for reviewing the report written by the WriteAgent and providing feedback.",
+        system_prompt: str = (
+            "You are the ReviewAgent that reviews the report written by the WriteAgent. "
+            "You should provide constructive feedback and suggestions for improvement."
+        ),
+        llm: str = "gpt-3.5-turbo",
+        tools: Optional[List[str]] = None,
+        can_handoff_to: Optional[List[str]] = None
+    ) -> None:
+        if tools is None:
+            tools = []
+        if can_handoff_to is None:
+            can_handoff_to = []
+        super().__init__(name, description, system_prompt, llm, tools, can_handoff_to)
 
     def build_agent(self, api_key, config_path) -> FunctionAgent:
         """Builds the agent with the provided parameters."""
@@ -38,7 +32,7 @@ class ReviewAgent:
             description=self.description,
             system_prompt=self.system_prompt,
             llm=self._get_llm_server(api_key=api_key, config_path=config_path),
-            tools=self.tools,
+            tools=[],  # Pass an empty list of the correct type
             can_handoff_to=self.can_handoff_to
         )
     

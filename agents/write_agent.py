@@ -1,14 +1,37 @@
-from llama_index.core.agent.workflow import FunctionAgent, ReActAgent
+import os
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from typing import List, Optional
 
-write_agent = FunctionAgent(
-    name="WriteAgent",
-    description="Useful for writing a report on a given topic.",
-    system_prompt=(
-        "You are the WriteAgent that can write a report on a given topic. "
-        "Your report should be in a markdown format. The content should be grounded in the research notes. "
-        "Once the report is written, you should get feedback at least once from the ReviewAgent."
-    ),
-    llm=llm,
-    tools=[write_report],
-    can_handoff_to=["ReviewAgent", "ResearchAgent"],
-)
+from llama_index.core.agent.workflow import FunctionAgent
+from models.agent import Agent
+
+class WriteAgent(Agent):
+    def __init__(
+        self,
+        name: str = "WriteAgent",
+        description: str = "Useful for writing a report based on the research conducted by the ResearchAgent.",
+        system_prompt: str = (
+            "You are the WriteAgent that writes a detailed report based on the research conducted by the ResearchAgent. "
+            "You should ensure that the report is well-structured and comprehensive."
+        ),
+        llm: str = "gpt-3.5-turbo",
+        tools: Optional[List[str]] = None,
+        can_handoff_to: Optional[List[str]] = None
+    ) -> None:
+        if tools is None:
+            tools = []
+        if can_handoff_to is None:
+            can_handoff_to = []
+        super().__init__(name, description, system_prompt, llm, tools, can_handoff_to)
+
+    def build_agent(self, api_key, config_path) -> FunctionAgent:
+        """Builds the agent with the provided parameters."""
+        return FunctionAgent(
+            name=self.name,
+            description=self.description,
+            system_prompt=self.system_prompt,
+            llm=self._get_llm_server(api_key=api_key, config_path=config_path),
+            tools=[],  # Pass an empty list of the correct type
+            can_handoff_to=self.can_handoff_to
+        )
