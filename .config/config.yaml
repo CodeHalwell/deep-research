@@ -1,0 +1,24 @@
+# LLM Provider Settings
+provider:
+  name: "openai"
+  model: "gpt-4o-mini"
+
+
+# Model Configuration
+model_settings:
+  temperature: 0.7
+  max_tokens: 1000
+  top_p: 1.0
+  frequency_penalty: 0.0
+  presence_penalty: 0.0
+  stop_sequences: []
+    
+# Context Management
+context:
+  system_prompt: "You are a helpful, conversational assistant with access to tools."
+  max_context_length: 16000
+
+mcp_server:
+  mcp_enabled: true
+  host: "127.0.0.1"
+  port: 7860

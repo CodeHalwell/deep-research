@@ -1,6 +1,5 @@
 from tavily import AsyncTavilyClient
 import os
-import time
 import aiohttp
 import json
 from bs4 import BeautifulSoup
@@ -33,6 +32,8 @@ class TavilyWebSearch:
         Returns:
             list: A list of search results.
         """
+        if not query:
+            raise ValueError("Search query cannot be empty")
         results = await self.client.search(query, max_results=max_results)
         return results
 
@@ -57,6 +58,8 @@ class DuckDuckGoWebSearch(DDGS):
             list: A list of search results.
         """
         results = []
+        if not query:
+            raise ValueError("Search query cannot be empty")
         try:
             for result in self.ddgs.text(query, max_results=max_results):
                 if isinstance(result, LHTMLParser):
@@ -80,18 +83,23 @@ class WebScraper:
         """
         self.data_dir = "data"
         
-    async def _scrape_website(self, url: str) -> str:
+    async def _scrape_website(self, url: str) -> str | Exception:
         """
         Fetch the content of a website, focusing on main article content.
 
         Args:
-            url (str): The URL of the website.
+            url (str): The URL of the website including the http or https. e.g. "https://example.com"
 
         Returns:
             str: The main content of the website.
         """
+        if not url:
+            raise ValueError("URL cannot be empty")
+        if not url.startswith(('http://', 'https://')):
+            raise ValueError("Invalid URL format. Must start with http:// or https://")
         try:
-            async with aiohttp.ClientSession() as session:
+            timeout = aiohttp.ClientTimeout(total=5)  # Set a timeout for the request
+            async with aiohttp.ClientSession(timeout=timeout) as session:
                 async with session.get(url) as response:
                     if response.status == 200:
                         content: str = await response.text()
@@ -216,13 +224,21 @@ class WebScraper:
                         }
                         
                         return json.dumps(result, indent=2, ensure_ascii=False)
+                    elif response.status == 404:
+                        raise Exception
+                    elif response.status == 403:
+                        raise Exception
+                    elif response.status == 408:
+                        raise Exception
+                    elif response.status == 429:
+                        raise Exception
                     else:
-                        return f"Error fetching {url}: {response.status}"
+                        return Exception(f"Error fetching {url}: HTTP {response.status}")
         except Exception as e:
-            return f"Error fetching {url}: {str(e)}"
+            raise Exception(f"Error fetching {url}: {str(e)}")
         
 
-    async def scrape_website(self, url: str) -> str:
+    async def scrape_website(self, url: str) -> str | Exception:
         """
         Scrape a website for its main content.
 
@@ -232,7 +248,13 @@ class WebScraper:
         Returns:
             str: The main content of the website.
         """
-        content: str = await self._scrape_website(url)
+        if not url:
+            raise ValueError("URL cannot be empty")
+        
+        try:
+            content: str | Exception = await self._scrape_website(url)
+        except Exception as e:
+            return Exception(f"Error scraping {url}: {str(e)}")
         
         # Parse the JSON string to access the title
         try:
@@ -319,24 +341,3 @@ class WebScraper:
                 except Exception as e:
                     print(f"Error downloading {url}: {str(e)}")
         return file_paths
-
-
-async def main():
-    # Example usage of TavilyWebSearch
-    tavily_search = TavilyWebSearch(api_key=os.getenv("TAVILY_API_KEY"))
-    results = await tavily_search.search("OpenAI GPT-4", max_results=5)
-    print("Tavily Search Results:", results)
-
-    # Example usage of DuckDuckGoWebSearch
-    ddg_search = DuckDuckGoWebSearch()
-    ddg_results = await ddg_search.search("OpenAI GPT-4", max_results=5)
-    print("DuckDuckGo Search Results:", ddg_results)
-
-    # Example usage of WebScraper
-    scraper = WebScraper()
-    scraped_content = await scraper.scrape_website("https://www.pricklesinapickle.co.uk/news-and-events/")
-    print("Scraped Content:", scraped_content)
-
-if __name__ == "__main__":
-    import asyncio
-    asyncio.run(main())
