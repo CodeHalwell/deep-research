@@ -21,7 +21,7 @@ class Config:
 def load_config(file_path: str) -> Config:
     """Load configuration from a YAML file."""
     with open(file_path, 'r') as file:
-        config_data = yaml.safe_load(file)
+        config_data: Config = yaml.safe_load(file)
 
     # Flatten the nested config structure
     provider = config_data.get("provider", {})
