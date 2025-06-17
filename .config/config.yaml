@@ -1,7 +1,7 @@
 # LLM Provider Settings
 provider:
   name: "openai"
-  model: "gpt-4o-mini"
+  model: "gpt-4.1-mini"
 
 
 # Model Configuration

@@ -18,6 +18,8 @@ dependencies = [
     "pytest>=8.4.0",
     "pytest-asyncio>=1.0.0",
     "python-dotenv>=1.1.0",
+    "serpapi>=0.1.5",
     "tavily-python>=0.7.6",
     "types-pyyaml>=6.0.12.20250516",
+    "types-requests>=2.32.4.20250611",
 ]

@@ -11,11 +11,16 @@ class WriteAgent(Agent):
         self,
         name: str = "WriteAgent",
         description: str = "Useful for writing a report based on the research conducted by the ResearchAgent.",
-        system_prompt: str = (
-            "You are the WriteAgent that writes a detailed report based on the research conducted by the ResearchAgent. "
-            "You should ensure that the report is well-structured and comprehensive."
+        system_prompt = (
+            "You are WriteAgent, an autonomous agent specializing in writing comprehensive reports based on research notes provided by the ResearchAgent. "
+            "Your task is to synthesize and organize the research findings into a well-structured, detailed report. The report should be logically organized, using clear headings and sections where appropriate. "
+            "Present the information in a way that is clear, accurate, and easy to follow, ensuring all key insights, evidence, and context from the research are included. "
+            "If the research notes contain open questions, uncertainties, or conflicting findings, address these transparently in the report. "
+            "Write in original prose; do not copy the research notes verbatim. Ensure the report flows smoothly, with appropriate transitions and explanations. "
+            "Use a tone and level of detail suitable for the intended audience, and format the report for readability. "
+            "When you have completed the report, your task is finished."
         ),
-        llm: str = "gpt-3.5-turbo",
+        llm: str = "gpt-4.1-mini",
         tools: Optional[List[str]] = None,
         can_handoff_to: Optional[List[str]] = None
     ) -> None:
@@ -32,6 +37,6 @@ class WriteAgent(Agent):
             description=self.description,
             system_prompt=self.system_prompt,
             llm=self._get_llm_server(api_key=api_key, config_path=config_path),
-            tools=[],  # Pass an empty list of the correct type
+            tools=[],
             can_handoff_to=self.can_handoff_to
         )

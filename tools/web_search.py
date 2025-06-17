@@ -1,9 +1,7 @@
-from tavily import AsyncTavilyClient
-import os
+from tavily import AsyncTavilyClient # type: ignore
 import aiohttp
 import json
 from bs4 import BeautifulSoup
-from bs4 import Tag
 from dotenv import load_dotenv
 from urllib.parse import urljoin
 from duckduckgo_search import DDGS
@@ -178,7 +176,7 @@ class WebScraper:
                             seen_texts.add(text)
                             
                             # Add heading formatting
-                            if element.name.startswith('h'):
+                            if element.name.startswith('h'): # type: ignore
                                 content_parts.append(f"\n{text}\n")
                             else:
                                 content_parts.append(text)
