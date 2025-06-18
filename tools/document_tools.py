@@ -1,4 +1,5 @@
-
+from ..utils.logging import setup_logger
+logger = setup_logger("document_tools", level="DEBUG", log_file="document_tools.log")
 
 class DocumentTools:
     """

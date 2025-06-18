@@ -19,6 +19,6 @@ context:
   max_context_length: 16000
 
 mcp_server:
-  mcp_enabled: true
+  mcp_enabled: enabled
   host: "127.0.0.1"
   port: 7860

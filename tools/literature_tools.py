@@ -3,9 +3,11 @@ from serpapi.client import SerpAPI  # type: ignore
 import os
 import dotenv
 from xml.etree import ElementTree as ET
-import urllib.request as libreq
-import xml.dom.minidom
-import io
+from typing import Any
+from utils.logging import setup_logger
+# Initialize logging for this module
+logger = setup_logger("literature_tools", level="DEBUG", log_file="literature_tools.log")
+
 # Load environment variables from .env file
 dotenv.load_dotenv()
 
@@ -14,7 +16,7 @@ class LiteratureTools:
     """A class to encapsulate literature-related tools and methods."""
 
     @staticmethod
-    def get_serpapi_results(query: str) -> list:
+    async def get_serpapi_results(query: str) -> list[dict[str, Any]]:
         """Fetches search results from SerpAPI for a given query."""
         api_key = os.getenv("SERPAPI_API_KEY")
         if not api_key:
@@ -27,14 +29,14 @@ class LiteratureTools:
         
         serp = SerpAPI(api_key=api_key)
 
-        results = serp.search(params=params)
+        results = await serp.search(params=params)
         if "organic_results" in results:
             return results["organic_results"]
         else:
             return []
 
     @staticmethod
-    def get_semantic_scholar_results(query: str) -> list:
+    async def get_semantic_scholar_results(query: str) -> list:
         """Fetches search results from Semantic Scholar for a given query."""
         
         url = "http://api.semanticscholar.org/graph/v1/paper/search/bulk"
@@ -43,17 +45,17 @@ class LiteratureTools:
             "fields": "title,url,publicationTypes,publicationDate,openAccessPdf",
             "year": "2023-"
         }
-        
-        response = requests.get(url, params=query_params)
+
+        response = await requests.get(url, params=query_params)
         return response.json().get("data", [])
 
 
     @staticmethod
-    def get_arxiv_results(query: str, max_results: int = 10) -> list:
+    async def get_arxiv_results(query: str, max_results: int = 10) -> list:
         """Fetches search results from arXiv for a given query."""
         
         url = f"http://export.arxiv.org/api/query?search_query=all:{query}&start=0&max_results={max_results}"
-        response = requests.get(url)
+        response = await requests.get(url)
         if response.status_code == 200:
             # Parse the XML response
             tree = ET.ElementTree(ET.fromstring(response.content))

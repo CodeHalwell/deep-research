@@ -1,11 +1,6 @@
-import os
-import sys
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from typing import List, Optional
-import asyncio
-
 from llama_index.core.agent.workflow import FunctionAgent
-from models.agent import Agent
+from ..models.agent import Agent
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -61,17 +56,3 @@ class PlanningAgent(Agent):
             tools=[],
             can_handoff_to=self.can_handoff_to
         )
-    
-pa = PlanningAgent()
-
-planning_agent = pa.build_agent(
-    api_key=os.getenv("OPENAI_API_KEY"),
-    config_path=".config/config.yaml")
-
-async def main():
-    result = await planning_agent.run(
-        "retention time prediction using GNN's"
-    )
-    print(result)
-
-asyncio.run(main())

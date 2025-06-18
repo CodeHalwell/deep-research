@@ -13,3 +13,5 @@ wheels/
 .pytest_cache
 .vscode/
 .gradio
+.ruff_cache 
+copilot_reviews

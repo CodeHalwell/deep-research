@@ -1,12 +1,11 @@
 from dataclasses import dataclass, field
 from typing import List
-import os
-import sys
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from utils.load_config import load_config
-from utils.load_config import Config
+from ..utils.config import Config, load_config
 from llama_index.llms.openai import OpenAI
 from abc import ABC
+from ..utils.logging import setup_logger
+# Initialize logging for this module
+logger = setup_logger("agent", level="DEBUG", log_file="agent.log")
 
 @dataclass
 class _AgentConfig:

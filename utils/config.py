@@ -1,4 +1,6 @@
 import yaml
+import os
+from typing import Dict, Any
 from dataclasses import dataclass, field
 
 @dataclass
@@ -19,9 +21,17 @@ class Config:
     port: int = 7860
 
 def load_config(file_path: str) -> Config:
-    """Load configuration from a YAML file."""
-    with open(file_path, 'r') as file:
-        config_data: Config = yaml.safe_load(file)
+    if not os.path.exists(file_path):
+        raise FileNotFoundError(f"Configuration file not found: {file_path}")
+    
+    try:
+        with open(file_path, 'r') as file:
+            config_data: Dict[str, Any] = yaml.safe_load(file)
+    except yaml.YAMLError as e:
+        raise ValueError(f"Invalid YAML in config file {file_path}: {e}")
+    
+    if not isinstance(config_data, dict):
+        raise ValueError(f"Config file must contain a dictionary, got {type(config_data)}")
 
     # Flatten the nested config structure
     provider = config_data.get("provider", {})
@@ -40,7 +50,7 @@ def load_config(file_path: str) -> Config:
         stop=model_settings.get("stop_sequences", []),
         system_prompt=context.get("system_prompt", "You are a helpful assistant."),
         max_context_length=context.get("max_context_length", 16000),
-        mcp_enabled=mcp_server.get("enabled", True),
+        mcp_enabled=mcp_server.get("mcp_enabled", True),
         host=mcp_server.get("host", "127.0.0.1"),
         port=mcp_server.get("port", 7860),
     )

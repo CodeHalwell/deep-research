@@ -1,10 +1,7 @@
-import os
-import sys
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from ..models.agent import Agent
 from typing import List, Optional
 
 from llama_index.core.agent.workflow import FunctionAgent
-from models.agent import Agent
 
 class ResearchAgent(Agent):
     def __init__(

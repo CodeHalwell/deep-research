@@ -1,11 +1,11 @@
 import gradio as gr
-import sys
 import os
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
-from tools.web_search import DuckDuckGoWebSearch, TavilyWebSearch, WebScraper
+from ..tools.web_search import DuckDuckGoWebSearch, TavilyWebSearch, WebScraper
 from dotenv import load_dotenv
-import os
+from ..utils.logging import setup_logger
+
+# Initialize logging for this module
+logger = setup_logger("mcp_server", level="DEBUG", log_file="mcp_server.log")
 
 load_dotenv()
 
@@ -40,7 +40,7 @@ async def ddg_search(query: str) -> str:
     except Exception as e:
         return f"Error during web search: {str(e)}"
     
-async def tavily_search(query: str) -> str:
+async def tavily_search(query: str) -> list[dict[str, str]] | str:
     """
     Perform a web search using Tavily.
     

@@ -10,6 +10,9 @@ from duckduckgo_search.duckduckgo_search import (
     DuckDuckGoSearchException, 
     TimeoutException, 
     LHTMLParser)
+from ..utils.logging import setup_logger
+
+logger = setup_logger("web_search", level="DEBUG", log_file="web_search.log")
 
 load_dotenv()
 
@@ -19,7 +22,7 @@ class TavilyWebSearch:
             raise ValueError("API key is required")
         self.client = AsyncTavilyClient(api_key=api_key)
 
-    async def search(self, query: str, max_results: int = 10):
+    async def search(self, query: str, max_results: int = 10) -> list[dict[str, str]]:
         """
         Perform a web search using the Tavily API.
 
