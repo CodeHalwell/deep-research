@@ -1,9 +1,12 @@
 from dataclasses import dataclass, field
-from typing import List
+from typing import List, Union, Callable, Any
 from ..utils.config import Config, load_config
 from llama_index.llms.openai import OpenAI
+from llama_index.core.agent.workflow import FunctionAgent
+from llama_index.core.tools.types import BaseTool
 from abc import ABC
 from ..utils.logging import setup_logger
+
 # Initialize logging for this module
 logger = setup_logger("agent", level="DEBUG", log_file="agent.log")
 
@@ -13,8 +16,8 @@ class _AgentConfig:
     description: str
     system_prompt: str
     llm: str
-    tools: List[str] = field(default_factory=list)
-    can_handoff_to: List[str] = field(default_factory=list)
+    tools: List[str] | None = field(default_factory=list)
+    can_handoff_to: List[str] | None = field(default_factory=list)
 
     def __post_init__(self):
         if not self.name:
@@ -40,3 +43,21 @@ class Agent(_AgentConfig, ABC):
         config: Config = load_config(config_path)
         model = config.model
         return OpenAI(api_key=api_key, model=model)
+    
+    def _resolve_tools(self, tool_names: List[str]) -> List[Union[BaseTool, Callable[..., Any]]]:
+        """Resolve tool names to actual tool instances. Override in subclasses."""
+        # Base implementation returns empty list - subclasses should override
+        return []
+    
+    def build_agent(self, api_key: str, config_path: str) -> FunctionAgent:
+        """Builds the agent with the provided parameters."""
+        logger.info(f"Building {self.name} with LLM {self.llm}")
+        resolved_tools = self._resolve_tools(self.tools or [])
+        return FunctionAgent(
+            name=self.name,
+            description=self.description,
+            system_prompt=self.system_prompt,
+            llm=self._get_llm_server(api_key=api_key, config_path=config_path),
+            tools=resolved_tools,
+            can_handoff_to=self.can_handoff_to
+        )
