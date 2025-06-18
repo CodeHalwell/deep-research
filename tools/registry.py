@@ -1,16 +1,27 @@
-from typing import Callable, Dict, List
+from typing import Dict, List, Any
+from .web_search import DuckDuckGoWebSearch, TavilyWebSearch, WebScraper
+from .literature_tools import LiteratureTools
 
 class ToolRegistry:
     def __init__(self):
-        self._tools: Dict[str, Callable] = {}
-        self._tool_categories: Dict[str, List[str]] = {}
+        self._tools = {
+            "web_search": DuckDuckGoWebSearch(),
+            "tavily_search": TavilyWebSearch(),
+            "web_scraper": WebScraper(),
+            "literature_search": LiteratureTools(),
+        }
+        
+        self._agent_tools = {
+            "ResearchAgent": ["web_search", "tavily_search", "literature_search", "web_scraper"],
+            "FactCheckingAgent": ["web_search", "literature_search"],
+            "FormattingAgent": ["citation_formatter", "template_engine"],
+            "PlanningAgent": [],
+            "WriteAgent": [],
+            "ReviewAgent": [],
+            "RevisionAgent": [],
+            "SummaryAgent": [],
+        }
     
-    def register_tool(self, name: str, func: Callable, category: str = "general"):
-        self._tools[name] = func
-        if category not in self._tool_categories:
-            self._tool_categories[category] = []
-        self._tool_categories[category].append(name)
-    
-    def get_tools_for_agent(self, agent_type: str) -> List[Callable]:
-        # Return appropriate tools based on agent type
-        return [self._tools[name] for name in self._tool_categories.get(agent_type, [])]
+    def get_tools_for_agent(self, agent_name: str) -> List[Any]:
+        tool_names = self._agent_tools.get(agent_name, [])
+        return [self._tools[name] for name in tool_names if name in self._tools]
