@@ -70,8 +70,10 @@ with gr.Blocks() as demo:
         tavily_search,
     )
 
-def main():
-    demo.launch(mcp_server=True)
+def start_server():
+    demo.launch(mcp_server=True,
+                server_name=os.getenv("SERVER_NAME", "127.0.0.1"),
+                server_port=int(os.getenv("SERVER_PORT", 7860)))
 
 if __name__ == "__main__":
-    main()
+    start_server()

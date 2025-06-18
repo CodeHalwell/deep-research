@@ -1,5 +1,5 @@
 from dotenv import load_dotenv
-from mcp_server import server
+from mcp_server import research_server, document_server
 from utils.config import load_config
 from utils.logging import setup_logger
 
@@ -15,6 +15,10 @@ except FileNotFoundError as e:
     exit(1)
 
 if config.mcp_enabled:
-    server.main()
-
-
+    logger.info("Starting MCP server...")
+    try:
+        research_server.start_server()
+        document_server.start_server()
+    except Exception as e:
+        logger.error(f"Error initializing servers: {e}")
+        exit(1)

@@ -403,6 +403,9 @@ dependencies = [
     { name = "gradio", extra = ["mcp"] },
     { name = "llama-index" },
     { name = "llama-index-tools-mcp" },
+    { name = "llama-index-tools-valyu" },
+    { name = "llama-index-tools-wikipedia" },
+    { name = "llama-index-tools-wolfram-alpha" },
     { name = "llama-index-utils-workflow" },
     { name = "nebius" },
     { name = "openai" },
@@ -425,6 +428,9 @@ requires-dist = [
     { name = "gradio", extras = ["mcp"], specifier = ">=5.34.0" },
     { name = "llama-index", specifier = ">=0.12.42" },
     { name = "llama-index-tools-mcp", specifier = ">=0.2.5" },
+    { name = "llama-index-tools-valyu", specifier = ">=0.2.0" },
+    { name = "llama-index-tools-wikipedia", specifier = ">=0.3.0" },
+    { name = "llama-index-tools-wolfram-alpha", specifier = ">=0.3.0" },
     { name = "llama-index-utils-workflow", specifier = ">=0.3.3" },
     { name = "nebius", specifier = ">=0.2.34" },
     { name = "openai", specifier = ">=1.86.0" },
@@ -1231,6 +1237,44 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/31/b7/7836c51fbef7043efcfd2a95611d17fb5aaa2fcf9f07cba260f8e7063322/llama_index_tools_mcp-0.2.5.tar.gz", hash = "sha256:627ef24fb965c1e01b5d45c1741143733ae4efd1a4e2dbe29a8aca9ab358e6e0", size = 11181 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/e8/89/f2e09e41ed651b9ac75613e8e07a93b3749f636f6f6290d3862e436c7787/llama_index_tools_mcp-0.2.5-py3-none-any.whl", hash = "sha256:ec2e2ca3cc6ef5f89c8139ff17436e87316fb03a24505efe16e66bb0ce59a3dc", size = 11987 },
+]
+
+[[package]]
+name = "llama-index-tools-valyu"
+version = "0.2.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "llama-index-core" },
+    { name = "valyu" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/d6/a7/3d4823236f6d1d085ad57229c76fb8276d777daea093b437fa6302eda03c/llama_index_tools_valyu-0.2.0.tar.gz", hash = "sha256:cb4ef903874f1c3b1cec26a96b040aa247cd7ce30b66c868898e822701eeff62", size = 3815 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/11/ca/f7ab3de9316d79658aba5c7437d7b58168a18ec09553f13b5eed7071acba/llama_index_tools_valyu-0.2.0-py3-none-any.whl", hash = "sha256:315fb30ec0e2a270cf4746868b2c3101e658e43f17e1dab784e4c4c753be70c1", size = 3191 },
+]
+
+[[package]]
+name = "llama-index-tools-wikipedia"
+version = "0.3.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "llama-index-core" },
+    { name = "wikipedia" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/86/fc/0ebe0913694a3582c0ae2c96cafb48689a9d012766e5b8a32d59932009de/llama_index_tools_wikipedia-0.3.0.tar.gz", hash = "sha256:8e3fc5ae8a479aacc6640c6c30a66f9848762bf8ebbbc4ceab41e8a4762a664c", size = 2487 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/60/89/0d7aa9a41ed0a0768790da770ef057416b81a92ecc35dc9f9d70a86abbb1/llama_index_tools_wikipedia-0.3.0-py3-none-any.whl", hash = "sha256:aa76c39237056b3ed727a23aadc65f34c5b500449ee9ec2efaced055f3ff9938", size = 2712 },
+]
+
+[[package]]
+name = "llama-index-tools-wolfram-alpha"
+version = "0.3.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "llama-index-core" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/da/a3/c812363cf0f818ddb6b0ff008aaaf5369b0398c1ba7d58e12b6e8dd906c6/llama_index_tools_wolfram_alpha-0.3.0.tar.gz", hash = "sha256:537cd0451863ea5475b08e20d01073a81c9148e4bbb9f2fe85213e6690078407", size = 2378 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/5a/a6/78540e5e426591b4719e49ae46c8738166d2a13efdbd5018fca96a1c7dd2/llama_index_tools_wolfram_alpha-0.3.0-py3-none-any.whl", hash = "sha256:4c873c22e43424896e15aa091480c7b353efe2f29fae41689ce4bf184687d17d", size = 2684 },
 ]
 
 [[package]]
@@ -2513,6 +2557,20 @@ wheels = [
 ]
 
 [[package]]
+name = "valyu"
+version = "2.0.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pydantic" },
+    { name = "requests" },
+    { name = "tqdm" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/74/84/e7620cb97276e2ce680f41f3ffc48192d355c098411e9c92b28c4bc1c6ce/valyu-2.0.0.tar.gz", hash = "sha256:14bfbbea30d72d101ca912e246034dbc293fb032be912f6c60c144d437c30641", size = 8450 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/e9/99/2ff9ac7685caa8b638cf7b3659b0b6f09d3fc1c0a9f80aed882dc3ef02bf/valyu-2.0.0-py3-none-any.whl", hash = "sha256:d4812e24a41061eef03b29a347cc6c5559f1a6ff9f7d74b3bc8eae0977775659", size = 6637 },
+]
+
+[[package]]
 name = "wcwidth"
 version = "0.2.13"
 source = { registry = "https://pypi.org/simple" }
@@ -2551,6 +2609,16 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/1b/6c/c65773d6cab416a64d191d6ee8a8b1c68a09970ea6909d16965d26bfed1e/websockets-15.0.1-cp313-cp313-win_amd64.whl", hash = "sha256:e09473f095a819042ecb2ab9465aee615bd9c2028e4ef7d933600a8401c79561", size = 176837 },
     { url = "https://files.pythonhosted.org/packages/fa/a8/5b41e0da817d64113292ab1f8247140aac61cbf6cfd085d6a0fa77f4984f/websockets-15.0.1-py3-none-any.whl", hash = "sha256:f7a866fbc1e97b5c617ee4116daaa09b722101d4a3c170c787450ba409f9736f", size = 169743 },
 ]
+
+[[package]]
+name = "wikipedia"
+version = "1.4.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "beautifulsoup4" },
+    { name = "requests" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/67/35/25e68fbc99e672127cc6fbb14b8ec1ba3dfef035bf1e4c90f78f24a80b7d/wikipedia-1.4.0.tar.gz", hash = "sha256:db0fad1829fdd441b1852306e9856398204dc0786d2996dd2e0c8bb8e26133b2", size = 27748 }
 
 [[package]]
 name = "wrapt"
