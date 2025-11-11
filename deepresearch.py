@@ -28,6 +28,14 @@ from tools.registry import ToolRegistry
 from models.agent import Agent
 from utils.config import load_config
 from utils.logging import setup_logger
+from error_recovery import retry_with_backoff, ResilientOperation
+
+# Optional database support
+try:
+    from database import get_database
+    HAS_DATABASE = True
+except ImportError:
+    HAS_DATABASE = False
 
 
 class WorkflowState:
