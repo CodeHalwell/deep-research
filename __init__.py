@@ -1,4 +1,4 @@
-"""Agent definitions for the Deep Research workflow."""
+"""Deep Research Workflow System - Agent definitions and main workflow orchestration."""
 
 from agents.deep_agents import (
     PlanningAgent,
@@ -12,10 +12,11 @@ from agents.deep_agents import (
     AGENTS,
     WORKFLOW_ORDER,
 )
+from deepresearch import DeepResearchWorkflow, WorkflowState
 
 __all__ = [
     "PlanningAgent",
-    "ResearchAgent", 
+    "ResearchAgent",
     "WriteAgent",
     "ReviewAgent",
     "RevisionAgent",
@@ -24,4 +25,6 @@ __all__ = [
     "FactCheckingAgent",
     "AGENTS",
     "WORKFLOW_ORDER",
+    "DeepResearchWorkflow",
+    "WorkflowState",
 ]

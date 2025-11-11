@@ -2,7 +2,7 @@ import gradio as gr
 import os
 
 from dotenv import load_dotenv
-from ..utils.logging import setup_logger
+from utils.logging import setup_logger
 
 load_dotenv()
 logger = setup_logger("document_server", level="DEBUG", log_file="document_server.log")

@@ -1,5 +1,5 @@
 from typing import List, Optional
-from ..models.agent import Agent
+from models.agent import Agent
 
 class FactCheckingAgent(Agent):
     name: str = "FactCheckingAgent"

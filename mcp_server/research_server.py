@@ -1,8 +1,8 @@
 import gradio as gr
 import os
-from ..tools.web_search import DuckDuckGoWebSearch, TavilyWebSearch, WebScraper
+from tools.web_search import DuckDuckGoWebSearch, TavilyWebSearch, WebScraper
 from dotenv import load_dotenv
-from ..utils.logging import setup_logger
+from utils.logging import setup_logger
 
 # Initialize logging for this module
 logger = setup_logger("mcp_server", level="DEBUG", log_file="mcp_server.log")
