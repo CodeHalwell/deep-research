@@ -1,11 +1,11 @@
 from dataclasses import dataclass, field
 from typing import List, Union, Callable, Any
-from ..utils.config import Config, load_config
+from utils.config import Config, load_config
 from llama_index.llms.openai import OpenAI
 from llama_index.core.agent.workflow import FunctionAgent
 from llama_index.core.tools.types import BaseTool
 from abc import ABC
-from ..utils.logging import setup_logger
+from utils.logging import setup_logger
 
 # Initialize logging for this module
 logger = setup_logger("agent", level="DEBUG", log_file="agent.log")

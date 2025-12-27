@@ -1,5 +1,5 @@
 from llama_index.core.workflow import Context
-from ..utils.logging import setup_logger
+from utils.logging import setup_logger
 # Initialize logging for this module
 logger = setup_logger("context_tools", level="DEBUG", log_file="context_tools.log")
 

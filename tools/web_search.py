@@ -6,11 +6,11 @@ from dotenv import load_dotenv
 from urllib.parse import urljoin
 from duckduckgo_search import DDGS
 from duckduckgo_search.duckduckgo_search import (
-    RatelimitException, 
-    DuckDuckGoSearchException, 
-    TimeoutException, 
+    RatelimitException,
+    DuckDuckGoSearchException,
+    TimeoutException,
     LHTMLParser)
-from ..utils.logging import setup_logger
+from utils.logging import setup_logger
 
 logger = setup_logger("web_search", level="DEBUG", log_file="web_search.log")
 
